@@ -15,7 +15,7 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 import multiprocessing
 
-def train():
+def train(train_dir, test_dir, dataset_name):
 
     model = NC_Net(
         encoder=config.encoder,
@@ -26,14 +26,14 @@ def train():
     preprocessing_fn = None
 
     train_dataset = Dataset(
-        config.train_dir,
+        train_dir,
         augmentation=get_training_augmentation(),
         preprocessing=get_preprocessing(preprocessing_fn),
         mode="train",
     )
 
     valid_dataset = Dataset(
-        config.test_dir,
+        test_dir,
         augmentation=get_validation_augmentation(),
         preprocessing=get_preprocessing(preprocessing_fn),
         mode="test",
@@ -89,7 +89,7 @@ def train():
         verbose=True,
     )
 
-    writer_path = "./{}/NC-Net_{}".format(config.tensorboard_logs, config.dataset_name)
+    writer_path = "./{}/NC-Net_{}".format(config.tensorboard_logs, dataset_name)
     writer = SummaryWriter(writer_path)
     min_loss = 9999
     max_score = 0
@@ -109,9 +109,9 @@ def train():
         if min_loss > valid_logs[loss_fn.__name__]:
             min_loss = valid_logs[loss_fn.__name__]
             torch.save(
-                model,
+                model.state_dict(),
                 "./{}/NC-Net_{}.pth".format(
-                    config.checkpoints_dir, config.dataset_name
+                    config.checkpoints_dir, dataset_name
                 ),
             )
             last_save = i
@@ -120,9 +120,9 @@ def train():
         if max_score < valid_logs[metrics[0].__name__]:
             max_score = valid_logs[metrics[0].__name__]
             torch.save(
-                model,
+                model.state_dict(),
                 "./{}/NC-Net_{}_metric.pth".format(
-                    config.checkpoints_dir, config.dataset_name
+                    config.checkpoints_dir, dataset_name
                 ),
             )
             last_save = i
@@ -137,4 +137,43 @@ def train():
 
 
 if __name__ == "__main__":
-    train()
+    dataset_name = "consep"
+    train_dir = "data/{}/train/".format(dataset_name)
+    test_dir = "data/{}/test/".format(dataset_name)
+    train(train_dir, test_dir, dataset_name)
+    
+    
+    dataset_name = "pan1"
+    train_dir = "data/{}/train/".format(dataset_name)
+    test_dir = "data/{}/test/".format(dataset_name)
+    train(train_dir, test_dir, dataset_name)
+    
+    
+    dataset_name = "pan2"
+    train_dir = "data/{}/train/".format(dataset_name)
+    test_dir = "data/{}/test/".format(dataset_name)
+    train(train_dir, test_dir, dataset_name)
+    
+    
+    dataset_name = "pan3"
+    train_dir = "data/{}/train/".format(dataset_name)
+    test_dir = "data/{}/test/".format(dataset_name)
+    train(train_dir, test_dir, dataset_name)
+    
+    
+    dataset_name = "liz1"
+    train_dir = "data/{}/train/".format(dataset_name)
+    test_dir = "data/{}/test/".format(dataset_name)
+    train(train_dir, test_dir, dataset_name)
+    
+    
+    dataset_name = "liz2"
+    train_dir = "data/{}/train/".format(dataset_name)
+    test_dir = "data/{}/test/".format(dataset_name)
+    train(train_dir, test_dir, dataset_name)
+    
+    
+    dataset_name = "liz3"
+    train_dir = "data/{}/train/".format(dataset_name)
+    test_dir = "data/{}/test/".format(dataset_name)
+    train(train_dir, test_dir, dataset_name)
