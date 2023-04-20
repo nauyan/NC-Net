@@ -3,3 +3,4 @@ notebooks
 .DS_Store
 checkpoints
 run_logs
+data
