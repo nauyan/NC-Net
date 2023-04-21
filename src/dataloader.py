@@ -7,7 +7,12 @@ import cv2
 
 
 class Dataset(BaseDataset):
-    def __init__(self, dataset_dir, augmentation=None, preprocessing=None, mode=None):
+
+    def __init__(self,
+                 dataset_dir,
+                 augmentation=None,
+                 preprocessing=None,
+                 mode=None):
         ## Dataloader for Regression and Classification
 
         self.dataset_dir = dataset_dir
@@ -31,7 +36,8 @@ class Dataset(BaseDataset):
         if np.max(centroid_prob_mask) == 0:
             pass
         else:
-            centroid_prob_mask = (centroid_prob_mask / np.max(centroid_prob_mask)) * 1.0
+            centroid_prob_mask = (centroid_prob_mask /
+                                  np.max(centroid_prob_mask)) * 1.0
 
         mask = nuclear_mask
         mask = centroid_prob_mask

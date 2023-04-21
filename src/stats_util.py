@@ -36,11 +36,9 @@ def get_fast_aji(true, pred):
 
     # prefill with value
     pairwise_inter = np.zeros(
-        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64
-    )
+        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64)
     pairwise_union = np.zeros(
-        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64
-    )
+        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64)
 
     # caching pairwise
     for true_id in true_id_list[1:]:  # 0-th is background
@@ -73,11 +71,9 @@ def get_fast_aji(true, pred):
     paired_pred = list(paired_pred + 1)
     # add all unpaired GT and Prediction into the union
     unpaired_true = np.array(
-        [idx for idx in true_id_list[1:] if idx not in paired_true]
-    )
+        [idx for idx in true_id_list[1:] if idx not in paired_true])
     unpaired_pred = np.array(
-        [idx for idx in pred_id_list[1:] if idx not in paired_pred]
-    )
+        [idx for idx in pred_id_list[1:] if idx not in paired_pred])
     for true_id in unpaired_true:
         overall_union += true_masks[true_id].sum()
     for pred_id in unpaired_pred:
@@ -119,11 +115,9 @@ def get_fast_aji_plus(true, pred):
 
     # prefill with value
     pairwise_inter = np.zeros(
-        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64
-    )
+        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64)
     pairwise_union = np.zeros(
-        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64
-    )
+        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64)
 
     # caching pairwise
     for true_id in true_id_list[1:]:  # 0-th is background
@@ -156,11 +150,9 @@ def get_fast_aji_plus(true, pred):
     overall_union = paired_union.sum()
     # add all unpaired GT and Prediction into the union
     unpaired_true = np.array(
-        [idx for idx in true_id_list[1:] if idx not in paired_true]
-    )
+        [idx for idx in true_id_list[1:] if idx not in paired_true])
     unpaired_pred = np.array(
-        [idx for idx in pred_id_list[1:] if idx not in paired_pred]
-    )
+        [idx for idx in pred_id_list[1:] if idx not in paired_pred])
     for true_id in unpaired_true:
         overall_union += true_masks[true_id].sum()
     for pred_id in unpaired_pred:
@@ -213,8 +205,7 @@ def get_fast_pq(true, pred, match_iou=0.5):
 
     # prefill with value
     pairwise_iou = np.zeros(
-        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64
-    )
+        [len(true_id_list) - 1, len(pred_id_list) - 1], dtype=np.float64)
 
     # caching pairwise iou
     for true_id in true_id_list[1:]:  # 0-th is background
@@ -268,7 +259,8 @@ def get_fast_pq(true, pred, match_iou=0.5):
     # get the SQ, no paired has 0 iou so not impact
     sq = paired_iou.sum() / (tp + 1.0e-6)
 
-    return [dq, sq, dq * sq], [paired_true, paired_pred, unpaired_true, unpaired_pred]
+    return [dq, sq,
+            dq * sq], [paired_true, paired_pred, unpaired_true, unpaired_pred]
 
 
 #####
@@ -396,7 +388,9 @@ def pair_coordinates(setA, setB, radius):
         unparedA, unpairedB: remaining poitn in set A and set B unpaired
     """
     # * Euclidean distance as the cost matrix
-    pair_distance = scipy.spatial.distance.cdist(setA, setB, metric="euclidean")
+    pair_distance = scipy.spatial.distance.cdist(setA,
+                                                 setB,
+                                                 metric="euclidean")
 
     # * Munkres pairing with scipy library
     # the algorithm return (row indices, matched column indices)

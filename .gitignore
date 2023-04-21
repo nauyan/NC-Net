@@ -3,3 +3,6 @@ notebooks
 .DS_Store
 checkpoints
 run_logs
+data
+.ipynb_checkpoints
+temp.ipynb

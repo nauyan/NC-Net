@@ -21,6 +21,7 @@ from skimage.segmentation import watershed
 
 from tqdm import tqdm
 
+
 def get_stats(inst_map, pred_inst_map, print_img_stats=True):
     true = inst_map.astype("int32")
 
@@ -51,17 +52,21 @@ def get_stats(inst_map, pred_inst_map, print_img_stats=True):
         print()
 
 
-def apply_watershed(distance_transform=None, prob_map=None, foreground_mask=None):
+def apply_watershed(distance_transform=None,
+                    prob_map=None,
+                    foreground_mask=None):
     marker = label(prob_map)[0]
-    pred_inst_map = watershed(
-        distance_transform, markers=marker, mask=foreground_mask, compactness=0.01
-    )
+    pred_inst_map = watershed(distance_transform,
+                              markers=marker,
+                              mask=foreground_mask,
+                              compactness=0.01)
     return pred_inst_map
 
 
 dataset = Dataset(config.test_dir, preprocessing=get_preprocessing(None))
 
-model = torch.load("./{}/{}".format(config.checkpoints_dir,config.inference_weights))
+model = torch.load("./{}/{}".format(config.checkpoints_dir,
+                                    config.inference_weights))
 model.eval()
 
 metrics = [[], [], [], [], [], []]
@@ -77,11 +82,11 @@ for idx in tqdm(range(len(dataset)), total=len(dataset)):
     nuclei_map = pred_mask[:2, :, :].argmax(axis=0)
     prob_map = pred_mask[2, :, :]
 
-
     temp_prob_map = prob_map + 0
     temp_nuclei_map = nuclei_map + 0
 
-    temp_prob_marker = np.where(temp_prob_map > config.watershed_threshold, 1, 0)
+    temp_prob_marker = np.where(temp_prob_map > config.watershed_threshold, 1,
+                                0)
     temp_inst_map = mask[:, :, 2]
     pred_inst_map = apply_watershed(
         distance_transform=temp_prob_map,
@@ -97,4 +102,3 @@ metrics = np.array(metrics)
 metrics_avg = np.mean(metrics, axis=-1)
 np.set_printoptions(formatter={"float": "{: 0.5f}".format})
 print(metrics_avg)
-
