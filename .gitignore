@@ -4,3 +4,5 @@ notebooks
 checkpoints
 run_logs
 data
+.ipynb_checkpoints
+temp.ipynb

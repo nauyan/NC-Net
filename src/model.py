@@ -9,6 +9,7 @@ import os
 
 
 class NC_Net(nn.Module):
+
     def __init__(self, encoder, encoder_weights, device):
         super().__init__()
         self.model_name = "unet"

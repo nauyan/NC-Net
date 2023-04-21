@@ -15,6 +15,7 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 import multiprocessing
 
+
 def train(train_dir, test_dir, dataset_name):
 
     model = NC_Net(
@@ -63,13 +64,11 @@ def train(train_dir, test_dir, dataset_name):
         dice_score,
     ]
 
-    optimizer = torch.optim.RAdam(
-        [
-            dict(
-                params=model.parameters(), lr=config.learning_rate, betas=(0.9, 0.999)
-            ),
-        ]
-    )
+    optimizer = torch.optim.RAdam([
+        dict(params=model.parameters(),
+             lr=config.learning_rate,
+             betas=(0.9, 0.999)),
+    ])
 
     loss_fn = combined_loss
     train_epoch = trainUtil.TrainEpoch(
@@ -89,7 +88,8 @@ def train(train_dir, test_dir, dataset_name):
         verbose=True,
     )
 
-    writer_path = "./{}/NC-Net_{}".format(config.tensorboard_logs, dataset_name)
+    writer_path = "./{}/NC-Net_{}".format(config.tensorboard_logs,
+                                          dataset_name)
     writer = SummaryWriter(writer_path)
     min_loss = 9999
     max_score = 0
@@ -110,9 +110,8 @@ def train(train_dir, test_dir, dataset_name):
             min_loss = valid_logs[loss_fn.__name__]
             torch.save(
                 model.state_dict(),
-                "./{}/NC-Net_{}.pth".format(
-                    config.checkpoints_dir, dataset_name
-                ),
+                "./{}/NC-Net_{}.pth".format(config.checkpoints_dir,
+                                            dataset_name),
             )
             last_save = i
             print("Model saved Loss!")
@@ -121,59 +120,59 @@ def train(train_dir, test_dir, dataset_name):
             max_score = valid_logs[metrics[0].__name__]
             torch.save(
                 model.state_dict(),
-                "./{}/NC-Net_{}_metric.pth".format(
-                    config.checkpoints_dir, dataset_name
-                ),
+                "./{}/NC-Net_{}_metric.pth".format(config.checkpoints_dir,
+                                                   dataset_name),
             )
             last_save = i
             print("Model saved Metric!")
 
         if i - last_save >= 80:
             last_save = i
-            optimizer.param_groups[0]["lr"] = optimizer.param_groups[0]["lr"] * 0.5
-            print("Decrease decoder learning rate to ", optimizer.param_groups[0]["lr"])
+            optimizer.param_groups[0][
+                "lr"] = optimizer.param_groups[0]["lr"] * 0.5
+            print("Decrease decoder learning rate to ",
+                  optimizer.param_groups[0]["lr"])
 
     writer.flush()
 
 
 if __name__ == "__main__":
-    dataset_name = "consep"
+    dataset_name = "all"
     train_dir = "data/{}/train/".format(dataset_name)
     test_dir = "data/{}/test/".format(dataset_name)
     train(train_dir, test_dir, dataset_name)
-    
-    
-    dataset_name = "pan1"
-    train_dir = "data/{}/train/".format(dataset_name)
-    test_dir = "data/{}/test/".format(dataset_name)
-    train(train_dir, test_dir, dataset_name)
-    
-    
-    dataset_name = "pan2"
-    train_dir = "data/{}/train/".format(dataset_name)
-    test_dir = "data/{}/test/".format(dataset_name)
-    train(train_dir, test_dir, dataset_name)
-    
-    
-    dataset_name = "pan3"
-    train_dir = "data/{}/train/".format(dataset_name)
-    test_dir = "data/{}/test/".format(dataset_name)
-    train(train_dir, test_dir, dataset_name)
-    
-    
-    dataset_name = "liz1"
-    train_dir = "data/{}/train/".format(dataset_name)
-    test_dir = "data/{}/test/".format(dataset_name)
-    train(train_dir, test_dir, dataset_name)
-    
-    
-    dataset_name = "liz2"
-    train_dir = "data/{}/train/".format(dataset_name)
-    test_dir = "data/{}/test/".format(dataset_name)
-    train(train_dir, test_dir, dataset_name)
-    
-    
-    dataset_name = "liz3"
-    train_dir = "data/{}/train/".format(dataset_name)
-    test_dir = "data/{}/test/".format(dataset_name)
-    train(train_dir, test_dir, dataset_name)
+
+    # dataset_name = "consep"
+    # train_dir = "data/{}/train/".format(dataset_name)
+    # test_dir = "data/{}/test/".format(dataset_name)
+    # train(train_dir, test_dir, dataset_name)
+
+    # dataset_name = "pan1"
+    # train_dir = "data/{}/train/".format(dataset_name)
+    # test_dir = "data/{}/test/".format(dataset_name)
+    # train(train_dir, test_dir, dataset_name)
+
+    # dataset_name = "pan2"
+    # train_dir = "data/{}/train/".format(dataset_name)
+    # test_dir = "data/{}/test/".format(dataset_name)
+    # train(train_dir, test_dir, dataset_name)
+
+    # dataset_name = "pan3"
+    # train_dir = "data/{}/train/".format(dataset_name)
+    # test_dir = "data/{}/test/".format(dataset_name)
+    # train(train_dir, test_dir, dataset_name)
+
+    # dataset_name = "liz1"
+    # train_dir = "data/{}/train/".format(dataset_name)
+    # test_dir = "data/{}/test/".format(dataset_name)
+    # train(train_dir, test_dir, dataset_name)
+
+    # dataset_name = "liz2"
+    # train_dir = "data/{}/train/".format(dataset_name)
+    # test_dir = "data/{}/test/".format(dataset_name)
+    # train(train_dir, test_dir, dataset_name)
+
+    # dataset_name = "liz3"
+    # train_dir = "data/{}/train/".format(dataset_name)
+    # test_dir = "data/{}/test/".format(dataset_name)
+    # train(train_dir, test_dir, dataset_name)

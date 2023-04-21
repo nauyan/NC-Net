@@ -48,7 +48,6 @@ def read_annotation(annotPath):
     return centroid_map, inst_map, nuclear_map, type_map
 
 
-
 test_folder = glob.glob(os.path.join(config.dataset_raw, "Test/Images"))[0]
 train_folder = glob.glob(os.path.join(config.dataset_raw, "Train/Images"))[0]
 
@@ -70,8 +69,7 @@ for img_path in glob.glob("{}/*".format(test_folder)):
     print(img_path)
     image = read_image(img_path)
     centroid_map, inst_map, nuclear_map, type_map = read_annotation(
-        img_path.replace("Images", "Labels").replace(".png", ".mat")
-    )
+        img_path.replace("Images", "Labels").replace(".png", ".mat"))
 
     output_mask = np.zeros((image.shape[0], image.shape[1], 7))
     output_mask[:, :, :3] = image / 255.0
@@ -80,17 +78,14 @@ for img_path in glob.glob("{}/*".format(test_folder)):
     output_mask[:, :, 5] = centroid_map  # centroids_mask
     output_mask[:, :, 6] = type_map  # type mask
 
-    output = util.view_as_windows(
-        output_mask, (256, 256, 7), step=(245, 245, 7)
-    ).reshape(
-        -1, 256, 256, 7
-    ) 
+    output = util.view_as_windows(output_mask, (256, 256, 7),
+                                  step=(245, 245, 7)).reshape(-1, 256, 256, 7)
 
     for idx in range(output.shape[0]):
         np.save(
             "{}/{}_{}.npy".format(
-                config.test_dir, os.path.basename(img_path).replace(".png", ""), idx
-            ),
+                config.test_dir,
+                os.path.basename(img_path).replace(".png", ""), idx),
             output[idx],
         )
 
@@ -99,8 +94,7 @@ for img_path in glob.glob("{}/*".format(train_folder)):
 
     image = read_image(img_path)
     centroid_map, inst_map, nuclear_map, type_map = read_annotation(
-        img_path.replace("Images", "Labels").replace(".png", ".mat")
-    )
+        img_path.replace("Images", "Labels").replace(".png", ".mat"))
 
     output_mask = np.zeros((image.shape[0], image.shape[1], 7))
     output_mask[:, :, :3] = image / 255.0
@@ -109,16 +103,13 @@ for img_path in glob.glob("{}/*".format(train_folder)):
     output_mask[:, :, 5] = centroid_map  # centroids_mask
     output_mask[:, :, 6] = type_map  # type mask
 
-    output = util.view_as_windows(
-        output_mask, (256, 256, 7), step=(128, 128, 7)
-    ).reshape(
-        -1, 256, 256, 7
-    )  
+    output = util.view_as_windows(output_mask, (256, 256, 7),
+                                  step=(128, 128, 7)).reshape(-1, 256, 256, 7)
 
     for idx in range(output.shape[0]):
         np.save(
             "{}/{}_{}.npy".format(
-                config.train_dir, os.path.basename(img_path).replace(".png", ""), idx
-            ),
+                config.train_dir,
+                os.path.basename(img_path).replace(".png", ""), idx),
             output[idx],
         )

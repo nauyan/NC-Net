@@ -6,9 +6,8 @@ import numpy as np
 
 
 def get_training_augmentation():
-    stain_matrix = np.array(
-        [[0.91633014, -0.20408072, -0.34451435], [0.17669817, 0.92528011, 0.33561059]]
-    )
+    stain_matrix = np.array([[0.91633014, -0.20408072, -0.34451435],
+                             [0.17669817, 0.92528011, 0.33561059]])
 
     train_transform = [
         #         albu.OneOf(
@@ -19,7 +18,8 @@ def get_training_augmentation():
         #             ],
         #             p=0.9,
         #         ),
-        albu.CoarseDropout(p=1, always_apply=True, max_height=20, max_width=20),
+        albu.CoarseDropout(p=1, always_apply=True, max_height=20,
+                           max_width=20),
         albu.IAAAdditiveGaussianNoise(p=0.2),
         albu.IAAPerspective(p=0.5),
         albu.OneOf(

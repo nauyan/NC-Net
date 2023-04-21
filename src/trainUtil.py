@@ -5,7 +5,14 @@ from .meter import AverageValueMeter
 
 
 class Epoch:
-    def __init__(self, model, loss, metrics, stage_name, device="cpu", verbose=True):
+
+    def __init__(self,
+                 model,
+                 loss,
+                 metrics,
+                 stage_name,
+                 device="cpu",
+                 verbose=True):
         self.model = model
         self.loss = loss
         self.metrics = metrics
@@ -39,14 +46,15 @@ class Epoch:
         logs = {}
         loss_meter = AverageValueMeter()
         metrics_meters = {
-            metric.__name__: AverageValueMeter() for metric in self.metrics
+            metric.__name__: AverageValueMeter()
+            for metric in self.metrics
         }
 
         with tqdm(
-            dataloader,
-            desc=self.stage_name,
-            file=sys.stdout,
-            disable=not (self.verbose),
+                dataloader,
+                desc=self.stage_name,
+                file=sys.stdout,
+                disable=not (self.verbose),
         ) as iterator:
             for x, y in iterator:
                 x, y = x.to(self.device), y.to(self.device)
@@ -75,7 +83,14 @@ class Epoch:
 
 
 class TrainEpoch(Epoch):
-    def __init__(self, model, loss, metrics, optimizer, device="cpu", verbose=True):
+
+    def __init__(self,
+                 model,
+                 loss,
+                 metrics,
+                 optimizer,
+                 device="cpu",
+                 verbose=True):
         super().__init__(
             model=model,
             loss=loss,
@@ -99,6 +114,7 @@ class TrainEpoch(Epoch):
 
 
 class ValidEpoch(Epoch):
+
     def __init__(self, model, loss, metrics, device="cpu", verbose=True):
         super().__init__(
             model=model,
