@@ -14,7 +14,8 @@ test_dir = "data/all/test/"
 checkpoints_dir = "checkpoints"
 tensorboard_logs = "run_logs"
 
-encoder = "tu-tf_efficientnet_b5_ns"
+# encoder = "tu-tf_efficientnet_b5_ns"
+encoder = "tu-tf_efficientnet_b0_ns"
 encoder_weights = None
 
 # CoNSep Weights
@@ -24,7 +25,7 @@ encoder_weights = None
 inference_weights = "NC-Net_all_metric.pth"
 
 device = "cuda"
-batch_size = 16
+batch_size = 32
 epochs = 1000
 learning_rate = 0.01
 watershed_threshold = 0.2

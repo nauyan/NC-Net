@@ -44,11 +44,11 @@ def train(train_dir, test_dir, dataset_name):
     train_loader = DataLoader(
         train_dataset,
         batch_size=batch_size,
-        shuffle=True,
+        shuffle=False,
         num_workers=multiprocessing.cpu_count(),
         pin_memory=True,
         persistent_workers=True,
-        prefetch_factor=8,
+        prefetch_factor=32,
     )
     valid_loader = DataLoader(
         valid_dataset,
@@ -88,8 +88,9 @@ def train(train_dir, test_dir, dataset_name):
         verbose=True,
     )
 
-    writer_path = "./{}/NC-Net_{}".format(config.tensorboard_logs,
-                                          dataset_name)
+    writer_path = "./{}/NC-Net_{}_{}".format(config.tensorboard_logs,
+                                            config.encoder,
+                                            dataset_name)
     writer = SummaryWriter(writer_path)
     min_loss = 9999
     max_score = 0
@@ -110,7 +111,8 @@ def train(train_dir, test_dir, dataset_name):
             min_loss = valid_logs[loss_fn.__name__]
             torch.save(
                 model.state_dict(),
-                "./{}/NC-Net_{}.pth".format(config.checkpoints_dir,
+                "./{}/NC-Net_{}_{}.pth".format(config.checkpoints_dir,
+                                            config.encoder,
                                             dataset_name),
             )
             last_save = i
@@ -120,8 +122,9 @@ def train(train_dir, test_dir, dataset_name):
             max_score = valid_logs[metrics[0].__name__]
             torch.save(
                 model.state_dict(),
-                "./{}/NC-Net_{}_metric.pth".format(config.checkpoints_dir,
-                                                   dataset_name),
+                "./{}/NC-Net__{}_{}_metric.pth".format(config.checkpoints_dir,
+                                                    config.encoder,
+                                                    dataset_name),
             )
             last_save = i
             print("Model saved Metric!")
