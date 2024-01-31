@@ -74,7 +74,7 @@ python train.py
 > **Note**: The training job currently only works with single GPU and does not support CPU training.
 
 ### Pre-Trained Weights
-The pre-trained model weights of NC-Net for ```CoNSeP```, ```PanNuke``` and ```Lizard``` can be found [here](https://drive.google.com/drive/u/4/folders/1bndhWtwgsQLrNvupEpZqG9mEDWaWx89t).
+The pre-trained model weights of NC-Net for ```CoNSeP```, ```PanNuke``` and ```Lizard``` can be found [here]([https://drive.google.com/drive/u/4/folders/1bndhWtwgsQLrNvupEpZqG9mEDWaWx89t](https://nustedupk0-my.sharepoint.com/:f:/g/personal/srashid_dphd19seecs_student_nust_edu_pk/Einy-z7qkNdJiHhdK7MvSi4BmgkeQ8Mt9G4pmwIaEnceVA?e=RWBiZe)).
 
 ### Model Inference
 The model inference can done by running the command below:
